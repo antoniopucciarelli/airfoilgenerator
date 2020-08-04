@@ -9,7 +9,7 @@ program airfoilgenerator
     use AIRFOIL_object
     use PANEL_object
     use MEANline_object
-    use discretisation_module
+    use discretization_module
 
     implicit none
 

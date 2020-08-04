@@ -182,10 +182,10 @@ module MEANline_object
         integer,intent(in)         :: writing_file
 
         write(writing_file,*) 'MEAN-LINE OBJECT'
-        write(writing_file,*) '    id:                 ', this%get_id()
-        write(writing_file,*) '    point coords [x,y]: ', this%get_coords()
-        write(writing_file,*) '    thickness:          ', this%get_thickness()
-        write(writing_file,*) '    theta:              ', this%get_theta()
+        write(writing_file,*) '    id                 : ', this%get_id()
+        write(writing_file,*) '    point coords [x,y] : ', this%get_coords()
+        write(writing_file,*) '    thickness          : ', this%get_thickness()
+        write(writing_file,*) '    theta              : ', this%get_theta()
         write(writing_file,*) new_line('A')
 
     end subroutine saving

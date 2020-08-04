@@ -207,13 +207,13 @@ module PANEL_object
         integer,intent(in)      :: writing_file
 
         write(writing_file,*) 'PANEL OBJECT'
-        write(writing_file,*) '    id:                   ', this%get_id()
-        write(writing_file,*) '    length:               ', this%get_length()
-        write(writing_file,*) '    midpoint [x,y]:       ', this%get_midpointx(), this%get_midpointy() 
-        write(writing_file,*) '    starting point [x,y]: ', this%get_coords1()
-        write(writing_file,*) '    ending point [x,y]:   ', this%get_coords2()
-        write(writing_file,*) '    tangent vector:       ', this%get_tangentx(), this%get_tangenty()
-        write(writing_file,*) '    normal vector:        ', this%get_normalx(), this%get_normaly()
+        write(writing_file,*) '    id                   : ', this%get_id()
+        write(writing_file,*) '    length               : ', this%get_length()
+        write(writing_file,*) '    midpoint       [x,y] : ', this%get_midpointx(), this%get_midpointy() 
+        write(writing_file,*) '    starting point [x,y] : ', this%get_coords1()
+        write(writing_file,*) '    ending point   [x,y] : ', this%get_coords2()
+        write(writing_file,*) '    tangent vector       : ', this%get_tangentx(), this%get_tangenty()
+        write(writing_file,*) '    normal vector        : ', this%get_normalx(), this%get_normaly()
         write(writing_file,*) new_line('A')  
 
     end subroutine saving
