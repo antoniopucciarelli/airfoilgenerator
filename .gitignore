@@ -5,5 +5,5 @@ include/
 bin/
 CMakeCache.txt
 *.dat
-MakeFile/
+Makefile
 *.cmake
