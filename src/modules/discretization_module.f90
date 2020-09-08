@@ -75,6 +75,9 @@ module discretization_module
             writing_file = 1
 
             open(unit=writing_file, file=filename, status='replace')
+                
+            write(1,*) '# of mean line objects : ', airfoil%get_npoints()
+            
             do k=1,dim
                 call MEANLINEarray(k)%saving(writing_file)
             end do
@@ -84,6 +87,9 @@ module discretization_module
             filename(9:30) = '_airfoil_PANEL.dat'
             writing_file = 1
             open(unit=writing_file, file=filename, status='replace')
+            
+            write(1,*) '# of panel objects : ', 2*airfoil%get_npoints() - 2
+
             do k=1,2*dim-2 
                 call PANELarray(k)%saving(writing_file)
             end do

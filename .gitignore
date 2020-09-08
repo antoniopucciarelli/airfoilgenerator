@@ -1,2 +1,9 @@
 *.mod
 *.o
+CMakeFiles/
+include/
+bin/
+CMakeCache.txt
+*.dat
+MakeFile/
+*.cmake
