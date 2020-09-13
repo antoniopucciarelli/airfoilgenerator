@@ -77,6 +77,7 @@ module discretization_module
             open(unit=writing_file, file=filename, status='replace')
                 
             write(1,*) '# of mean line objects : ', airfoil%get_npoints()
+            write(1,*) new_line('A')
             
             do k=1,dim
                 call MEANLINEarray(k)%saving(writing_file)
@@ -89,6 +90,7 @@ module discretization_module
             open(unit=writing_file, file=filename, status='replace')
             
             write(1,*) '# of panel objects : ', 2*airfoil%get_npoints() - 2
+            write(1,*) new_line('A')
 
             do k=1,2*dim-2 
                 call PANELarray(k)%saving(writing_file)
