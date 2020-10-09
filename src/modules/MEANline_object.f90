@@ -16,12 +16,14 @@ module MEANline_object
         real(kind=8)              :: theta     = 0.0
 
         contains
-
-        procedure, pass(this) :: get_id
-        procedure, pass(this) :: get_coords
-        procedure, pass(this) :: get_dy
-        procedure, pass(this) :: get_theta
-        procedure, pass(this) :: get_thickness
+        
+        !!!!!!!!!!!!!!! GET FUNCTION - PASS PROCEDURE !!!!!!!!!!!!!!!
+            procedure, pass(this) :: get_id
+            procedure, pass(this) :: get_coords
+            procedure, pass(this) :: get_dy
+            procedure, pass(this) :: get_theta
+            procedure, pass(this) :: get_thickness
+        !!!!!!!!!!!!!!! GET FUNCTION - PASS PROCEDURE !!!!!!!!!!!!!!!
         procedure, pass(this) :: set_id
         procedure, pass(this) :: set_coordx
         procedure, pass(this) :: set_coordy_leading
@@ -39,41 +41,41 @@ module MEANline_object
     contains
 
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!! GET functions !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    integer(kind=4) function get_id(this)
-        implicit none 
-        class(MEANline),intent(in) :: this
+        integer(kind=4) function get_id(this)
+            implicit none 
+            class(MEANline),intent(in) :: this
 
-        get_id = this%id
-    end function get_id
+            get_id = this%id
+        end function get_id
 
-    real(kind=8) function get_dy(this)
-        implicit none
-        class(MEANline),intent(in) :: this
-        
-        get_dy = this%dy
-    end function get_dy
+        real(kind=8) function get_dy(this)
+            implicit none
+            class(MEANline),intent(in) :: this
+            
+            get_dy = this%dy
+        end function get_dy
 
-    function get_coords(this)
-        implicit none 
-        real(kind=8),dimension(2)  :: get_coords
-        class(MEANline),intent(in) :: this
-        
-        get_coords = this%coords
-    end function get_coords
+        function get_coords(this)
+            implicit none 
+            real(kind=8),dimension(2)  :: get_coords
+            class(MEANline),intent(in) :: this
+            
+            get_coords = this%coords
+        end function get_coords
 
-    real(kind=8) function get_theta(this)
-        implicit none 
-        class(MEANline),intent(in) :: this
-        
-        get_theta = this%theta
-    end function get_theta
+        real(kind=8) function get_theta(this)
+            implicit none 
+            class(MEANline),intent(in) :: this
+            
+            get_theta = this%theta
+        end function get_theta
 
-    real(kind=8) function get_thickness(this)
-        implicit none 
-        class(MEANline),intent(in) :: this
-        
-        get_thickness = this%thickness
-    end function get_thickness
+        real(kind=8) function get_thickness(this)
+            implicit none 
+            class(MEANline),intent(in) :: this
+            
+            get_thickness = this%thickness
+        end function get_thickness
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!! GET functions !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     subroutine set_id(this,x)
@@ -181,7 +183,7 @@ module MEANline_object
         class(MEANline),intent(in) :: this
         integer,intent(in)         :: writing_file
 
-        write(writing_file,*) 'MEAN-LINE OBJECT'
+        write(writing_file,'(A16)')        'MEAN-LINE OBJECT'
         write(writing_file,'(A27,T30,I4)') '    id                 : ', this%get_id()
         write(writing_file,'(A27, 2F8.4)') '    point coords [x,y] : ', this%get_coords()
         write(writing_file,'(A27,  F8.4)') '    thickness          : ', this%get_thickness()

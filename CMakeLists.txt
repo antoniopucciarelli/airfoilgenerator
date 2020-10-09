@@ -23,5 +23,7 @@ file(GLOB_RECURSE module_files ${PROJECT_SOURCE_DIR}/src/modules/*.f90)
 add_executable(agen ${source_files} ${module_files})
 
 # coping .plt files
-file(COPY ${PROJECT_SOURCE_DIR}/src/plt/AIRFOILgnuplot.plt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY ${PROJECT_SOURCE_DIR}/src/plt/AIRFOILgnuplot.plt      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 file(COPY ${PROJECT_SOURCE_DIR}/src/plt/AIRFOILelement_plot.plt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY ${PROJECT_SOURCE_DIR}/src/plt/MEANplot.plt            DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY ${PROJECT_SOURCE_DIR}/src/plt/COORDSplot.plt          DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)

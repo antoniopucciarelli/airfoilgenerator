@@ -42,62 +42,62 @@ module AIRFOIL_object
     contains
 
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!! GET functions !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    integer(kind=4) function get_id(this)
-        implicit none
-        class(NACA_airfoil),intent(in) :: this
-        get_id = this%id
-    end function get_id
+        integer(kind=4) function get_id(this)
+            implicit none
+            class(NACA_airfoil),intent(in) :: this
+            get_id = this%id
+        end function get_id
 
-    real(kind=8) function get_AOA(this)
-        implicit none
-        class(NACA_airfoil),intent(in) :: this
-        get_AOA = this%AOA
-    end function get_AOA
+        real(kind=8) function get_AOA(this)
+            implicit none
+            class(NACA_airfoil),intent(in) :: this
+            get_AOA = this%AOA
+        end function get_AOA
 
-    function get_transl(this)
-        implicit none
-        real(kind=8),dimension(2)       :: get_transl
-        class(NACA_airfoil),intent(in) :: this
-        get_transl = this%transl
-    end function get_transl
+        function get_transl(this)
+            implicit none
+            real(kind=8),dimension(2)       :: get_transl
+            class(NACA_airfoil),intent(in) :: this
+            get_transl = this%transl
+        end function get_transl
 
-    real(kind=8) function get_translx(this)
-        implicit none
-        class(NACA_airfoil),intent(in) :: this
-        get_translx = this%transl(1)
-    end function get_translx
+        real(kind=8) function get_translx(this)
+            implicit none
+            class(NACA_airfoil),intent(in) :: this
+            get_translx = this%transl(1)
+        end function get_translx
 
-    real(kind=8) function get_transly(this)
-        implicit none
-        class(NACA_airfoil),intent(in) :: this
-        get_transly = this%transl(2)
-    end function get_transly
+        real(kind=8) function get_transly(this)
+            implicit none
+            class(NACA_airfoil),intent(in) :: this
+            get_transly = this%transl(2)
+        end function get_transly
 
-    real(kind=8) function get_scaling(this)
-        implicit none
-        class(NACA_airfoil),intent(in) :: this
-        get_scaling = this%scaling
-    end function get_scaling
+        real(kind=8) function get_scaling(this)
+            implicit none
+            class(NACA_airfoil),intent(in) :: this
+            get_scaling = this%scaling
+        end function get_scaling
 
-    integer(kind=4) function get_npoints(this)
-        implicit none
-        class(NACA_airfoil),intent(in) :: this
-        get_npoints = this%n_points
-    end function get_npoints
+        integer(kind=4) function get_npoints(this)
+            implicit none
+            class(NACA_airfoil),intent(in) :: this
+            get_npoints = this%n_points
+        end function get_npoints
 
-    function get_data(this)
-        implicit none
-        integer(kind=4),dimension(3)   :: get_data 
-        class(NACA_airfoil),intent(in) :: this
-        get_data = this%data
-    end function 
+        function get_data(this)
+            implicit none
+            integer(kind=4),dimension(3)   :: get_data 
+            class(NACA_airfoil),intent(in) :: this
+            get_data = this%data
+        end function 
 
-    character(len=8) function get_airfoilname(this)
-        implicit none 
-        class(NACA_airfoil),intent(in) :: this 
-        
-        get_airfoilname = this%airfoilname
-    end function get_airfoilname
+        character(len=8) function get_airfoilname(this)
+            implicit none 
+            class(NACA_airfoil),intent(in) :: this 
+
+            get_airfoilname = this%airfoilname
+        end function get_airfoilname
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!! GET functions !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     subroutine set_AIRFOILname(this)
