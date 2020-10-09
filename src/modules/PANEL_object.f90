@@ -219,7 +219,6 @@ module PANEL_object
             this%normal(2)  =   cos(theta)
             
             if (flag == 'UP') then
-                print*, 'UP'
                 if (this%normal(2) < 0) then
                     this%normal  = - this%normal
                 end if
@@ -231,7 +230,6 @@ module PANEL_object
                 end if
             
             else if (flag == 'DW') then
-                print*, 'DW'
                 if (this%normal(2) > 0 ) then
                     this%normal = - this%normal
                 end if
