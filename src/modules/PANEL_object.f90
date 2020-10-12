@@ -44,7 +44,6 @@ module PANEL_object
         procedure, pass(this) :: compute_transl
         procedure, pass(this) :: compute_midpoint
         procedure, pass(this) :: saving
-        procedure, pass(this) :: compare_coords
 
     end type panel
 

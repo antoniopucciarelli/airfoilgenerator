@@ -30,7 +30,7 @@ program airfoilgenerator
     real(kind=8)                            :: airfoil_data1 ! easy-access variable -> 1st number of airfoil%data
     real(kind=8)                            :: airfoil_data2 ! easy-access variable -> 2nd number of arifoil%data
 
-
+    ! this program allows you to create multiple NACA**** profile each run 
     do while(x==1)
 
         print*, 'AIRFOIL # ', counter
@@ -130,28 +130,6 @@ program airfoilgenerator
                     end do
                 end if
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SCALING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            
-            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROTATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                call airfoil%set_AOA() ! setting wing rotation -> airfoil AOA
-
-                ! rotation procedure for panel and mean-line objects
-                if(airfoil%get_AOA() /= 0) then
-
-                    ! geometry points rotation procedure
-                    ! PANELS COORDS
-                    do j=1,dim
-                        call rot(coordxUP(j),coordyUP(j),airfoil%get_AOA())
-                    end do
-                    do j=1,dim
-                        call rot(coordxDW(j),coordyDW(j),airfoil%get_AOA())
-                    end do
-                    ! MEAN LINE COORDS
-                    do j=1,dim
-                        call rot(MEANLINEarray(j)%coords(1),MEANLINEarray(j)%coords(2),airfoil%get_AOA())
-                    end do
-
-                end if
-            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROTATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 
             !!!!!!!!!!!!!!!!!!!!!!!!! PANEL DATA ALLOCATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 ! panel array allocation data -> LOWER AIRFOIL PART
@@ -187,6 +165,42 @@ program airfoilgenerator
                     call PANELarray(j)%compute_tangent_and_normal('UP')
                 end do
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!! PANEL PROPERTIES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROTATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                call airfoil%set_AOA() ! setting wing rotation -> airfoil AOA
+
+                ! rotation procedure for panel and mean-line objects
+                if(airfoil%get_AOA() /= 0) then
+                !!! ATTENTION: this choice to rotate the panel points and the vector associated to it
+                !              after allocated all the points in the panel are made because of it can 
+                !              be some tangent and normal vector could present errors in direction 
+                !              computing them after node rotation and allocation into PANEL objects
+                !              THIS IS CLOSELY RELATED TO AOA AND THE GEOMETRY OF THE AIRFOIL (EXPECIALLY
+                !              AT ITS LEADING EDGE) 
+
+                    ! geometry points rotation procedure
+                    ! PANELS COORDS
+                    do j=1,2*dim-2
+                        call rot(PANELarray(j)%coords1(1),PANELarray(j)%coords1(2),airfoil%get_AOA())
+                    end do
+                    do j=1,2*dim-2
+                        call rot(PANELarray(j)%coords2(1),PANELarray(j)%coords2(2),airfoil%get_AOA())
+                    end do
+                    ! PANELS TANGENT VECTOR
+                    do j=1,2*dim-2
+                        call rot(PANELarray(j)%tangent(1),PANELarray(j)%tangent(2),airfoil%get_AOA())
+                    end do
+                    ! PANELS NORMAL VECTOR
+                    do j=1,2*dim-2
+                        call rot(PANELarray(j)%normal(1),PANELarray(j)%normal(2),airfoil%get_AOA())
+                    end do
+                    ! MEAN LINE COORDS
+                    do j=1,dim
+                        call rot(MEANLINEarray(j)%coords(1),MEANLINEarray(j)%coords(2),airfoil%get_AOA())
+                    end do
+
+                end if
+            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROTATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PANEL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
