@@ -19,6 +19,7 @@ module PANEL_object
         real(kind=8),dimension(2) :: coords1  = (/0.0, 0.0/) ! [x, y]
         real(kind=8),dimension(2) :: coords2  = (/0.0, 0.0/) ! [x, y]
         real(kind=8)              :: angle    = 0.0          ! rads
+        character(len=2)          :: POS      = 'ND'         ! [UP => upper surface; DW => lower surface; ND => not defined]
 
         contains
 
@@ -34,10 +35,12 @@ module PANEL_object
             procedure, pass(this) :: get_coords1
             procedure, pass(this) :: get_coords2
             procedure, pass(this) :: get_angle
+            procedure, pass(this) :: get_position
         !!!!!!!!!!!!!!! GET FUNCTION - PASS PROCEDURE !!!!!!!!!!!!!!!    
         procedure, pass(this) :: set_coords
         procedure, pass(this) :: set_id
         procedure, pass(this) :: set_angle
+        procedure, pass(this) :: set_position
         procedure, pass(this) :: SCALINGfunc
         procedure, pass(this) :: compute_length
         procedure, pass(this) :: compute_tangent_and_normal
@@ -126,24 +129,38 @@ module PANEL_object
             class(panel), intent(in) :: this
             get_angle = this%angle
         end function get_angle
+
+        character(len=2) function get_position(this)
+            implicit none
+            class(panel), intent(in) :: this
+            get_position = this%POS
+        end function get_position
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!! GET functions !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     subroutine set_coords(this,coordx1,coordy1,coordx2,coordy2)
         implicit none
-        class(panel), intent(inout) :: this
-        real(kind=8), intent(in)    :: coordx1, coordx2, coordy1, coordy2
+
+        class(panel),intent(inout) :: this
+        real(kind=8),intent(in)    :: coordx1
+        real(kind=8),intent(in)    :: coordx2
+        real(kind=8),intent(in)    :: coordy1 
+        real(kind=8),intent(in)    :: coordy2
 
         this%coords1(1) = coordx1
         this%coords1(2) = coordy1
         this%coords2(1) = coordx2
         this%coords2(2) = coordy2
+
     end subroutine set_coords
 
     subroutine set_id(this,ID)
         implicit none
+
         class(panel),intent(inout) :: this
         integer(kind=4),intent(in) :: ID  
+
         this%id = ID
+
     end subroutine set_id
 
     subroutine set_angle(this)
@@ -153,27 +170,43 @@ module PANEL_object
         real(kind=8)               :: dx
         real(kind=8)               :: dy
 
-        dx = this%coords1(1) - this%coords2(1)
-        dy = this%coords1(2) - this%coords2(2)
+        dx = this%coords2(1) - this%coords1(1)
+        dy = this%coords2(2) - this%coords1(2)
 
-        this%angle = atan2(dy,dx) 
-        ! this is simply a computation of the minimum angle between x axis and the panel direction
+        this%angle = atan2(dy,dx)  
+        
     end subroutine set_angle
+
+    subroutine set_position(this,flag)
+        implicit none 
+
+        class(panel),intent(inout)  :: this
+        character(len=2),intent(in) :: flag
+
+        this%POS = flag
+        
+    end subroutine set_position
 
     subroutine SCALINGfunc(this,scale)
         implicit none
+
         class(panel),intent(inout) :: this
         real(kind=4),intent(in)    :: scale
 
         ! scaling 
         this%coords1(:) = this%coords1(:) * scale
         this%coords2(:) = this%coords2(:) * scale
+
     end subroutine SCALINGfunc
 
     subroutine compute_length(this)
         implicit none
-        class(panel), intent(inout) :: this
-        real(kind=8)                :: coordx1, coordx2, coordy1, coordy2
+
+        class(panel),intent(inout) :: this
+        real(kind=8)               :: coordx1
+        real(kind=8)               :: coordx2
+        real(kind=8)               :: coordy1
+        real(kind=8)               :: coordy2
         
         coordx1 = this%coords1(1)
         coordy1 = this%coords1(2)
@@ -181,12 +214,14 @@ module PANEL_object
         coordy2 = this%coords2(2)
         
         this%length = sqrt((coordx1 - coordx2)**2 + (coordy1**2 - coordy2)**2)        
+    
     end subroutine compute_length
 
-    subroutine compute_tangent_and_normal(this,flag)
+    subroutine compute_tangent_and_normal(this)
         use math_module
         use FOUL
         implicit none
+
         class(panel),intent(inout)  :: this
         real(kind=8)                :: coordx1
         real(kind=8)                :: coordx2
@@ -196,7 +231,8 @@ module PANEL_object
         real(kind=8)                :: dy
         real(kind=8)                :: theta
         real(kind=8)                :: cross_value
-        character(len=2),intent(in) :: flag           
+        real(kind=8),dimension(2)   :: temp
+        character(len=2)            :: flag           
 
         ! starting point coords
         coordx1 = this%coords1(1)
@@ -205,12 +241,14 @@ module PANEL_object
         coordx2 = this%coords2(1)
         coordy2 = this%coords2(2)
 
-        theta = this%get_angle()
+        flag = this%get_position()
 
         if (this%length /= 0.0) then 
             ! description of panel vector
             dx = coordx2 - coordx1
             dy = coordy2 - coordy1
+
+            theta = atan2(dy,dx)
             
             this%tangent(1) =   cos(theta)
             this%tangent(2) =   sin(theta)
@@ -246,37 +284,59 @@ module PANEL_object
 
     end subroutine compute_tangent_and_normal
 
-    subroutine compute_midpoint(this)
+    subroutine compute_midpoint(this,flag)
+        use FOUL
         implicit none
-        class(panel),intent(inout) :: this
+
+        class(panel),intent(inout)  :: this
+        real(kind=8)                :: norm_1
+        real(kind=8)                :: norm_2
+        character(len=5),intent(in) :: flag
 
         this%midpoint = (this%coords1 + this%coords2)/2
+
+        if(flag == 'print')then 
+            norm_1 = sqrt((this%midpoint(1)- this%coords1(1))**2 + (this%midpoint(2)- this%coords1(2))**2)
+            norm_2 = sqrt((this%midpoint(1)- this%coords2(1))**2 + (this%midpoint(2)- this%coords2(2))**2)
+            if(norm_1 == norm_2)then
+                call write_formatted('[','normal','OK','green','] -- norm1 = norm2','normal')
+            else
+                call write_formatted('[','normal','WARNING','red','] -- norm1 = norm2','normal')
+                print*, norm_1 - norm_2
+                print*, log(norm_1/norm_2)
+            end if
+        end if
+    
     end subroutine compute_midpoint
 
     subroutine compute_transl(this,airfoil)
         use AIRFOIL_object
         implicit none
+
         class(panel),intent(inout)     :: this
         class(NACA_airfoil),intent(in) :: airfoil
 
         this%coords1  = this%coords1  + airfoil%transl
         this%coords2  = this%coords2  + airfoil%transl
+
     end subroutine compute_transl
 
     subroutine saving(this,writing_file)
         implicit none 
+
         class(panel),intent(in) :: this
         integer,intent(in)      :: writing_file
 
         write(writing_file,'(A12)')         'PANEL OBJECT'
         write(writing_file,'(A27,T29, I4)') '    id                   : ', this%get_id()
-        write(writing_file,'(A27,   F8.4)') '    length               : ', this%get_length()
-        write(writing_file,'(A27,  2F8.4)') '    midpoint       [x,y] : ', this%get_midpointx(), this%get_midpointy() 
-        write(writing_file,'(A27,  2F8.4)') '    starting point [x,y] : ', this%get_coords1()
-        write(writing_file,'(A27,  2F8.4)') '    ending point   [x,y] : ', this%get_coords2()
-        write(writing_file,'(A27,  2F8.4)') '    tangent vector [x,y] : ', this%get_tangentx(), this%get_tangenty()
-        write(writing_file,'(A27,  2F8.4)') '    normal vector  [x,y] : ', this%get_normalx(), this%get_normaly()
-        write(writing_file,'(A27,   F8.4)') '    angle          [rad] : ', this%get_angle()
+        write(writing_file,'(A27,  F12.8)') '    length               : ', this%get_length()
+        write(writing_file,'(A27, 2F12.8)') '    midpoint       [x,y] : ', this%get_midpointx(), this%get_midpointy() 
+        write(writing_file,'(A27, 2F12.8)') '    starting point [x,y] : ', this%get_coords1()
+        write(writing_file,'(A27, 2F12.8)') '    ending point   [x,y] : ', this%get_coords2()
+        write(writing_file,'(A27, 2F12.8)') '    tangent vector [x,y] : ', this%get_tangentx(), this%get_tangenty()
+        write(writing_file,'(A27, 2F12.8)') '    normal vector  [x,y] : ', this%get_normalx(), this%get_normaly()
+        write(writing_file,'(A27,  F12.8)') '    angle          [rad] : ', this%get_angle()
+        write(writing_file,'(A27,     A2)') '    position             : ', this%get_position()
         write(writing_file,*) new_line('A')   
 
     end subroutine saving

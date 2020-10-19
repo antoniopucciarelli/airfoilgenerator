@@ -6,6 +6,7 @@ module math_module
     contains 
 
     function cross(x, y)
+    ! this function computes the cross product between x and y in 2D
         implicit none
 
         real(kind=8)              :: cross

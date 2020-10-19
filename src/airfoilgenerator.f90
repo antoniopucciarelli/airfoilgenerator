@@ -75,10 +75,7 @@ program airfoilgenerator
                 call MEANLINEarray(i)%set_gradient_trailing(airfoil_data1,airfoil_data2)
             end do
             
-            MEANLINEarray(dim)%coords = (/1.0, 0.0/) ! mean-line end point coords
-
-            !call savevector(MEANLINEarray,dim)
-            !call system('gnuplot -p MEANplot.plt')
+            MEANLINEarray(dim)%coords = (/ 1.0, 0.0 /) ! mean-line end point coords
 
             ! thickness
             do k=1,dim
@@ -137,12 +134,14 @@ program airfoilgenerator
                     call PANELarray(k)%set_id(k)
                     call PANELarray(k)%set_coords(coordxDW(dim-k),coordyDW(dim-k),&
                                                   coordxDW(dim-k+1),coordyDW(dim-k+1))
+                    call PANELarray(k)%set_position('DW')
                 end do
                 ! panel array allocation data -> UPPER AIRFOIL PART
                 do k=1,dim-1
-                    call PANELarray(dim+k-1)%set_id(dim+k)
+                    call PANELarray(dim+k-1)%set_id(dim+k-1)
                     call PANELarray(dim+k-1)%set_coords(coordxUP(k),coordyUP(k),&
                                                   coordxUP(k+1),coordyUP(k+1))
+                    call PANELarray(dim+k-1)%set_position('UP')
                 end do
             !!!!!!!!!!!!!!!!!!!!!!!!! PANEL DATA ALLOCATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
@@ -158,11 +157,8 @@ program airfoilgenerator
                 end do
 
                 ! compute segments tangent and normal versors
-                do j=1,dim-1
-                    call PANELarray(j)%compute_tangent_and_normal('DW')  
-                end do
-                do j=dim,2*dim-2
-                    call PANELarray(j)%compute_tangent_and_normal('UP')
+                do j=1,2*dim-2
+                    call PANELarray(j)%compute_tangent_and_normal()  
                 end do
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!! PANEL PROPERTIES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -224,7 +220,7 @@ program airfoilgenerator
             ! compute segments middle points 
             !  -> middle-points depend on actual wing-points coordinates
             do j=1,2*dim-2
-                call PANELarray(j)%compute_midpoint()
+                call PANELarray(j)%compute_midpoint('noprt')
             end do
         !!!!!!!!!!!!!!!!!!!!!!!!!!!! MIDPOINT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
