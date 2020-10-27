@@ -121,6 +121,7 @@ module discretization_module
                 call system('gnuplot -p AIRFOILgnuplot.plt')
                 call system('gnuplot -p AIRFOILelement_plot.plt')
             end if
+            
         end subroutine GNUplot_print
 
         subroutine GNUplot_saving(PANELarray,MEANLINEarray,dim)

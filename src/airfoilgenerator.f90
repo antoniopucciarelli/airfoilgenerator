@@ -139,8 +139,8 @@ program airfoilgenerator
                 ! panel array allocation data -> UPPER AIRFOIL PART
                 do k=1,dim-1
                     call PANELarray(dim+k-1)%set_id(dim+k-1)
-                    call PANELarray(dim+k-1)%set_coords(coordxUP(k),coordyUP(k),&
-                                                  coordxUP(k+1),coordyUP(k+1))
+                    call PANELarray(dim+k-1)%set_coords(coordxUP(k+1),coordyUP(k+1),&
+                                                  coordxUP(k),coordyUP(k))
                     call PANELarray(dim+k-1)%set_position('UP')
                 end do
             !!!!!!!!!!!!!!!!!!!!!!!!! PANEL DATA ALLOCATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
