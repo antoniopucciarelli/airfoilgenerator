@@ -218,6 +218,21 @@ module PANEL_object
     end subroutine compute_length
 
     subroutine compute_tangent_and_normal(this)
+    ! this subroutine compute the normal and tangent vectors of a panel 
+    ! it changes automatically the direction of each vector with the help
+    !   of the panel object type POS attribute
+    !   
+    ! OUTPUT VECTORS:  
+    !   UP position:      
+    !       normal vector points upward
+    !       tangent vector points rearward
+    !   DW position:    
+    !       normal vector points downward
+    !       tangent vector points rearward
+    !
+    ! !!! KEEP IN MIND !!!
+    ! there are some vectors that do not coincide with the panel source-vorticity convenction regarding their direction
+    ! 
         use math_module
         use FOUL
         implicit none
@@ -265,7 +280,7 @@ module PANEL_object
                 if (cross_value < 0) then
                     this%tangent = - this%tangent
                 end if
-            
+
             else if (flag == 'DW') then
                 if (this%normal(2) > 0 ) then
                     this%normal = - this%normal
@@ -276,7 +291,7 @@ module PANEL_object
                 if (cross_value > 0) then 
                     this%tangent = - this%tangent
                 end if
-            
+
             end if
         else 
             call write_formatted('[','normal','WARNING','red','] -- panel object with 0 length','normal')

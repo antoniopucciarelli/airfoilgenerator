@@ -132,15 +132,15 @@ program airfoilgenerator
                 ! panel array allocation data -> LOWER AIRFOIL PART
                 do k=1,dim-1
                     call PANELarray(k)%set_id(k)
-                    call PANELarray(k)%set_coords(coordxDW(dim-k),coordyDW(dim-k),&
-                                                  coordxDW(dim-k+1),coordyDW(dim-k+1))
+                    call PANELarray(k)%set_coords(coordxDW(dim-k+1),coordyDW(dim-k+1),&
+                                                  coordxDW(dim-k),coordyDW(dim-k))
                     call PANELarray(k)%set_position('DW')
                 end do
                 ! panel array allocation data -> UPPER AIRFOIL PART
                 do k=1,dim-1
                     call PANELarray(dim+k-1)%set_id(dim+k-1)
-                    call PANELarray(dim+k-1)%set_coords(coordxUP(k+1),coordyUP(k+1),&
-                                                  coordxUP(k),coordyUP(k))
+                    call PANELarray(dim+k-1)%set_coords(coordxUP(k),coordyUP(k),&
+                                                  coordxUP(k+1),coordyUP(k+1))
                     call PANELarray(dim+k-1)%set_position('UP')
                 end do
             !!!!!!!!!!!!!!!!!!!!!!!!! PANEL DATA ALLOCATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
