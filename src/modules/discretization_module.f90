@@ -141,10 +141,11 @@ module discretization_module
                 write(1,'(2F8.4)') MEANLINEarray(k)%get_coords()
             end do
 
-            write(2,'(2F8.4)') PANELarray(1)%get_coords2()
             do k=1,2*dim-2
                 write(2,'(2F8.4)') PANELarray(k)%get_coords1()
             end do
+            write(2,'(2F8.4)') PANELarray(1)%get_coords1()
+
             write(2,'(2F8.4)') PANELarray(1)%get_coords2()
 
             do k=1,2*dim-2
