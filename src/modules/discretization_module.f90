@@ -5,62 +5,60 @@ module discretization_module
     !!!!!!!!!!!!!!!!!!!!!!!!! PANEL & MEANline RELATED !!!!!!!!!!!!!!!!!!!!!!!!!
         recursive subroutine SCALINGfunction(x,y,scale)
         ! this subroutine modifies the panel points position  
-        implicit none
-        real(kind=8),intent(in)    :: scale
-        real(kind=8),intent(inout) :: x
-        real(kind=8),intent(inout) :: y
+            implicit none
+            real(kind=8),intent(in)    :: scale
+            real(kind=8),intent(inout) :: x
+            real(kind=8),intent(inout) :: y
 
-        ! scaling 
-        x = x * scale
-        y = y * scale
+            ! scaling 
+            x = x * scale
+            y = y * scale
         end subroutine SCALINGfunction
 
         recursive subroutine rot(coordx,coordy,alpha)
         ! this subroutine computes the rotation of the vector of coords [coordx, coordy]
-        use math_module
-        implicit none
-        real(kind=8),intent(inout) :: coordx, coordy ! input coordinates
-        real(kind=8)               :: angle          ! angle between x axis and [coordx, coordy]
-        real(kind=8)               :: radius         ! lenght of [coordx, coordy] vector 
-        real(kind=8),intent(in)    :: alpha          ! AOA => describes the angle of rotation of the vector
+            use math_module
+            implicit none
+            real(kind=8),intent(inout) :: coordx, coordy ! input coordinates
+            real(kind=8)               :: angle          ! angle between x axis and [coordx, coordy]
+            real(kind=8)               :: radius         ! lenght of [coordx, coordy] vector 
+            real(kind=8),intent(in)    :: alpha          ! AOA => describes the angle of rotation of the vector
 
-        angle  = atan2(coordy,coordx)
-        
-        angle  = angle - alpha * pi/180
-        radius = abs(sqrt(coordx**2 + coordy**2))
-        
-        coordx = radius * cos(angle)
-        coordy = radius * sin(angle)
+            angle  = atan2(coordy,coordx)
+
+            angle  = angle - alpha * pi/180
+            radius = abs(sqrt(coordx**2 + coordy**2))
+
+            coordx = radius * cos(angle)
+            coordy = radius * sin(angle)
 
         end subroutine rot
 
         subroutine check_LE_panels(PANELarray,dim)
         ! this subroutine checks the normal and tangent vectors in the proximity of the leading edge
-        use PANEL_object
-        implicit none
+            use PANEL_object
+            implicit none
 
-        type(panel),dimension(2*dim-2),intent(inout) :: PANELarray
-        integer(kind=4),intent(in)                   :: dim
-        integer(kind=4)                              :: interval
-        integer(kind=4)                              :: i
+            integer(kind=4),intent(in)                   :: dim
+            integer(kind=4)                              :: interval
+            integer(kind=4)                              :: i
+            type(panel),dimension(2*dim-2),intent(inout) :: PANELarray
 
-        ! interval variable description
-        ! this variable describes the length of the check interval related to the total panels used 
-        ! to discretize the airfoil geometry
-        interval = dim/5
+            ! interval variable description
+            ! this variable describes the length of the check interval related to the total panels used 
+            ! to discretize the airfoil geometry
+            interval = dim/10
 
-        if(interval == 0)then
-            interval = 1 
-        end if
-
-        print*, interval
-
-        ! this loop checks all the panel at the leading edge subourb
-        do i=dim-interval,dim+interval 
-            if(PANELarray(i)%get_normalx() > 0)then 
-                PANELarray(i)%normal(1) = - PANELarray(i)%normal(1)
+            if(interval == 0)then
+                interval = 1 
             end if
-        end do
+
+            ! this loop checks all the panel at the leading edge subourb
+            do i=dim-interval,dim+interval 
+                if(PANELarray(i)%get_normalx() > 0)then 
+                    PANELarray(i)%normal(1) = - PANELarray(i)%normal(1)
+                end if
+            end do
 
         end subroutine check_LE_panels
     !!!!!!!!!!!!!!!!!!!!!!!!! PANEL & MEANline RELATED !!!!!!!!!!!!!!!!!!!!!!!!!
