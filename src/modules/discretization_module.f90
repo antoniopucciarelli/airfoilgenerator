@@ -33,6 +33,36 @@ module discretization_module
         coordy = radius * sin(angle)
 
         end subroutine rot
+
+        subroutine check_LE_panels(PANELarray,dim)
+        ! this subroutine checks the normal and tangent vectors in the proximity of the leading edge
+        use PANEL_object
+        implicit none
+
+        type(panel),dimension(2*dim-2),intent(inout) :: PANELarray
+        integer(kind=4),intent(in)                   :: dim
+        integer(kind=4)                              :: interval
+        integer(kind=4)                              :: i
+
+        ! interval variable description
+        ! this variable describes the length of the check interval related to the total panels used 
+        ! to discretize the airfoil geometry
+        interval = dim/5
+
+        if(interval == 0)then
+            interval = 1 
+        end if
+
+        print*, interval
+
+        ! this loop checks all the panel at the leading edge subourb
+        do i=dim-interval,dim+interval 
+            if(PANELarray(i)%get_normalx() > 0)then 
+                PANELarray(i)%normal(1) = - PANELarray(i)%normal(1)
+            end if
+        end do
+
+        end subroutine check_LE_panels
     !!!!!!!!!!!!!!!!!!!!!!!!! PANEL & MEANline RELATED !!!!!!!!!!!!!!!!!!!!!!!!!
 
     !!!!!!!!!!!!!!!!!!!!!!!!!!!! GNUplot PROCESS  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

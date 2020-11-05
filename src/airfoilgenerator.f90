@@ -97,10 +97,6 @@ program airfoilgenerator
         coordyUP(dim)                = 0
         coordxDW(dim)                = 1
         coordyDW(dim)                = 0
-        coordxUP(1)                  = 0
-        coordyUP(1)                  = 0
-        coordxDW(1)                  = 0
-        coordyDW(1)                  = 0
         MEANLINEarray(dim)%coords(1) = 1
         MEANLINEarray(dim)%coords(2) = 0
 
@@ -160,6 +156,10 @@ program airfoilgenerator
                 do j=1,2*dim-2
                     call PANELarray(j)%compute_tangent_and_normal()  
                 end do
+
+                ! check on leading edge panels
+                call check_LE_panels(PANELarray,dim)
+
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!! PANEL PROPERTIES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROTATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
