@@ -6,7 +6,7 @@ module math_module
     contains 
 
     function cross(x, y)
-    ! this function computes the cross product between x and y in 2D
+    ! this function compute the cross product between 2 vectors
         implicit none
 
         real(kind=8)              :: cross
@@ -16,5 +16,17 @@ module math_module
         cross = x(1)*y(2) - x(2)*y(1)
 
     end function cross
+
+    function norm(x)
+    ! this function computes the norm of a vector
+
+        implicit none 
+
+        real(kind=8)                         :: norm
+        real(kind=8),dimension(2),intent(in) :: x
+
+        norm = sqrt(x(1)**2 + x(2)**2)
+
+    end function norm
 
 end module math_module

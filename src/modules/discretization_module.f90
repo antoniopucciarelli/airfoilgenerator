@@ -56,7 +56,7 @@ module discretization_module
             ! this loop checks all the panel at the leading edge subourb
             do i=dim-interval,dim+interval 
                 if(PANELarray(i)%get_normalx() > 0)then 
-                    PANELarray(i)%normal(1) = - PANELarray(i)%normal(1)
+                    PANELarray(i)%normal = - PANELarray(i)%normal
                 end if
             end do
 

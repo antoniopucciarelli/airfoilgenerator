@@ -24,18 +24,18 @@ module PANEL_object
         contains
 
         !!!!!!!!!!!!!!! GET FUNCTION - PASS PROCEDURE !!!!!!!!!!!!!!!
-            procedure, pass(this) :: get_id
-            procedure, pass(this) :: get_midpointx
-            procedure, pass(this) :: get_midpointy
-            procedure, pass(this) :: get_tangentx
-            procedure, pass(this) :: get_tangenty
-            procedure, pass(this) :: get_normalx
-            procedure, pass(this) :: get_normaly
-            procedure, pass(this) :: get_length
-            procedure, pass(this) :: get_coords1
-            procedure, pass(this) :: get_coords2
-            procedure, pass(this) :: get_angle
-            procedure, pass(this) :: get_position
+        procedure, pass(this) :: get_id
+        procedure, pass(this) :: get_midpointx
+        procedure, pass(this) :: get_midpointy
+        procedure, pass(this) :: get_tangentx
+        procedure, pass(this) :: get_tangenty
+        procedure, pass(this) :: get_normalx
+        procedure, pass(this) :: get_normaly
+        procedure, pass(this) :: get_length
+        procedure, pass(this) :: get_coords1
+        procedure, pass(this) :: get_coords2
+        procedure, pass(this) :: get_angle
+        procedure, pass(this) :: get_position
         !!!!!!!!!!!!!!! GET FUNCTION - PASS PROCEDURE !!!!!!!!!!!!!!!    
         procedure, pass(this) :: set_coords
         procedure, pass(this) :: set_id
@@ -187,7 +187,7 @@ module PANEL_object
         
     end subroutine set_position
 
-    subroutine SCALINGfunc(this,scale)
+    subroutine SCALINGfunc(this,scale) 
         implicit none
 
         class(panel),intent(inout) :: this
@@ -200,20 +200,15 @@ module PANEL_object
     end subroutine SCALINGfunc
 
     subroutine compute_length(this)
+        use math_module
         implicit none
 
         class(panel),intent(inout) :: this
-        real(kind=8)               :: coordx1
-        real(kind=8)               :: coordx2
-        real(kind=8)               :: coordy1
-        real(kind=8)               :: coordy2
+        real(kind=8),dimension(2)  :: coord
         
-        coordx1 = this%coords1(1)
-        coordy1 = this%coords1(2)
-        coordx2 = this%coords2(1)
-        coordy2 = this%coords2(2)
+        coord = this%get_coords1() - this%get_coords2() 
         
-        this%length = sqrt((coordx1 - coordx2)**2 + (coordy1**2 - coordy2)**2)        
+        this%length = norm(coord) 
     
     end subroutine compute_length
 

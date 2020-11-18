@@ -159,7 +159,6 @@ program airfoilgenerator
 
                 ! check on leading edge panels
                 call check_LE_panels(PANELarray,dim)
-
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!! PANEL PROPERTIES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ROTATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -167,7 +166,7 @@ program airfoilgenerator
 
                 ! rotation procedure for panel and mean-line objects
                 if(airfoil%get_AOA() /= 0) then
-                !!! ATTENTION: this choice to rotate the panel points and the vector associated to it
+                !!! WARNING:   this choice to rotate the panel points and the vector associated to it
                 !              after allocated all the points in the panel are made because of it can 
                 !              be some tangent and normal vector could present errors in direction 
                 !              computing them after node rotation and allocation into PANEL objects
