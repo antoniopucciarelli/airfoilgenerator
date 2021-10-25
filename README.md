@@ -23,6 +23,7 @@ These are the steps for the generation of a **NACA0012** airfoil.
 Once in ```bin/```:
 
 ```bash
+# launching program
 ./agen 
 # typing airfoil name 
 # -> naca**** or NACA*** syntax is required
