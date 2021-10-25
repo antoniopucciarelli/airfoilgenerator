@@ -26,7 +26,7 @@ Once in ```bin/```:
 # launching program
 ./agen 
 # typing airfoil name 
-# -> naca**** or NACA*** syntax is required
+# -> naca**** or NACA**** syntax is required
 naca0012
 # setting the number of coords for the discretization of airfoil chord
 # typing the scaling factor for the airfoil
