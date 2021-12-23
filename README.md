@@ -1,4 +1,4 @@
-# airfoilgenerator_FORTRAN
+# airfoilgenerator
 
 This program computes the geometry of a **NACA 4 digits** airfoil following Abbot steps.
 
